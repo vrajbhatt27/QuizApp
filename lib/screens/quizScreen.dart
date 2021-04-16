@@ -39,11 +39,42 @@ class _QuizScreenState extends State<QuizScreen> {
     },
   ];
 
+  int seconds = 7;
   int index = 0;
   int totCorrectAns = 0;
   int totIncorrectAns = 0;
   List selectedOptions = [];
   int selOptionIndex; //temporary
+
+  @override
+  void initState() {
+    super.initState();
+    // countDown();
+  }
+
+  countDown() {
+    Future.doWhile(() async {
+      //this changes the value by -1 every second until it reaches zero
+      await Future.delayed(
+        Duration(seconds: 1),
+      );
+      setState(() {
+        //add text widget in your build method which takes t as the data
+        seconds--;
+      });
+      if (seconds == 0) {
+        setState(() {
+          setState(() {
+            index = (index + 1) % 3;
+            selOptionIndex = 0;
+            seconds = 7;
+            totIncorrectAns++;
+          });
+        });
+      }
+      return seconds != -1;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,8 +106,8 @@ class _QuizScreenState extends State<QuizScreen> {
                             color: Colors.white,
                           ),
                         ),
-                        Text("${index+1}"),
-												Text(
+                        Text("$seconds"),
+                        Text(
                           " Incorrect: $totIncorrectAns",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
@@ -87,6 +118,10 @@ class _QuizScreenState extends State<QuizScreen> {
                     ),
                     SizedBox(
                       height: 20,
+                    ),
+                    Text("Question ${index + 1}/3"),
+                    SizedBox(
+                      height: 10,
                     ),
                     Center(
                       child: Text(
@@ -168,6 +203,7 @@ class _QuizScreenState extends State<QuizScreen> {
                       setState(() {
                         index = (index + 1) % 3;
                         selOptionIndex = 0;
+                        seconds = 7;
                       });
                     },
                     child: Text('Next'),
