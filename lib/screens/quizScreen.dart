@@ -19,7 +19,7 @@ class _QuizScreenState extends State<QuizScreen> {
   @override
   void initState() {
     super.initState();
-    // countDown();
+    countDown();
   }
 
   countDown() {
