@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import './resultScreen.dart';
+import '../data.dart';
 
 class QuizScreen extends StatefulWidget {
   @override
@@ -7,39 +8,7 @@ class QuizScreen extends StatefulWidget {
 }
 
 class _QuizScreenState extends State<QuizScreen> {
-  List<Map<String, dynamic>> questions = [
-    {
-      "Which is ur fav language?": ['python', 'Java', 'Dart', 'JS'],
-      'ans': 0,
-      'colors': [
-        Colors.black54,
-        Colors.black54,
-        Colors.black54,
-        Colors.black54
-      ],
-    },
-    {
-      "Which is ur fav Color?": ['Blue', 'White', 'Yellow', 'Block'],
-      'ans': 0,
-      'colors': [
-        Colors.black54,
-        Colors.black54,
-        Colors.black54,
-        Colors.black54
-      ],
-    },
-    {
-      "Which is ur fav country?": ['India', 'America', 'Canada', 'London'],
-      'ans': 0,
-      'colors': [
-        Colors.black54,
-        Colors.black54,
-        Colors.black54,
-        Colors.black54
-      ],
-    },
-  ];
-
+  
   int seconds = 7;
   int index = 0;
   int totCorrectAns = 0;
@@ -79,7 +48,7 @@ class _QuizScreenState extends State<QuizScreen> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => ResultScreen(totCorrectAns),
+          builder: (context) => ResultScreen(totCorrectAns, selectedOptions),
         ),
       );
     }

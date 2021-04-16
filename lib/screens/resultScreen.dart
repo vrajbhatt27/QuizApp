@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:internship_task/screens/reviewAns.dart';
 import './quizScreen.dart';
 
 class ResultScreen extends StatelessWidget {
   final score;
+  final selectedOptions;
 
-  ResultScreen(this.score);
+  ResultScreen(this.score, this.selectedOptions);
 
   Widget disp(String text) {
     return Text(
@@ -109,7 +111,14 @@ class ResultScreen extends StatelessWidget {
                     child: Text("Play Again"),
                   ),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => ReviewAns(selectedOptions),
+                        ),
+                      );
+                    },
                     child: Text("Review Answer"),
                   ),
                   TextButton(
