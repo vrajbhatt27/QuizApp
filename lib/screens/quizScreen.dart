@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import './resultScreen.dart';
 
 class QuizScreen extends StatefulWidget {
   @override
@@ -54,26 +55,34 @@ class _QuizScreenState extends State<QuizScreen> {
 
   countDown() {
     Future.doWhile(() async {
-      //this changes the value by -1 every second until it reaches zero
       await Future.delayed(
         Duration(seconds: 1),
       );
       setState(() {
-        //add text widget in your build method which takes t as the data
         seconds--;
       });
       if (seconds == 0) {
-        setState(() {
-          setState(() {
-            index = (index + 1) % 3;
-            selOptionIndex = 0;
-            seconds = 7;
-            totIncorrectAns++;
-          });
-        });
+        nextQues();
       }
       return seconds != -1;
     });
+  }
+
+  void nextQues() {
+    if (index < 2) {
+      setState(() {
+        index = (index + 1);
+        selOptionIndex = 0;
+        seconds = 7;
+      });
+    } else {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ResultScreen(totCorrectAns),
+        ),
+      );
+    }
   }
 
   @override
@@ -199,14 +208,8 @@ class _QuizScreenState extends State<QuizScreen> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        index = (index + 1) % 3;
-                        selOptionIndex = 0;
-                        seconds = 7;
-                      });
-                    },
-                    child: Text('Next'),
+                    onPressed: nextQues,
+                    child: index > 1 ? Text("Finish") : Text('Next'),
                   ),
                 )
               ],
