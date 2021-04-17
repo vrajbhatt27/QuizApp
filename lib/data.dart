@@ -31,4 +31,4 @@ List<Map<String, dynamic>> questions = [
         Colors.black54
       ],
     },
-  ];
+];

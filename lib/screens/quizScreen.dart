@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import './resultScreen.dart';
-import '../data.dart';
+// import '../data.dart';
 
 class QuizScreen extends StatefulWidget {
+  final questions;
+
+  QuizScreen(this.questions);
+
   @override
   _QuizScreenState createState() => _QuizScreenState();
 }
 
 class _QuizScreenState extends State<QuizScreen> {
-  
   int seconds = 7;
   int index = 0;
   int totCorrectAns = 0;
@@ -27,14 +30,23 @@ class _QuizScreenState extends State<QuizScreen> {
       await Future.delayed(
         Duration(seconds: 1),
       );
-      setState(() {
-        seconds--;
-      });
+      if (this.mounted) {
+        setState(() {
+          seconds--;
+        });
+      }
+
       if (seconds == 0) {
         nextQues();
       }
       return seconds != -1;
     });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    seconds = -1;
   }
 
   void nextQues() {
@@ -48,7 +60,8 @@ class _QuizScreenState extends State<QuizScreen> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => ResultScreen(totCorrectAns, selectedOptions),
+          builder: (context) =>
+              ResultScreen(totCorrectAns, selectedOptions, widget.questions),
         ),
       );
     }
@@ -56,8 +69,17 @@ class _QuizScreenState extends State<QuizScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var quesText = questions[index].keys.toList()[0]; //The question text
-    var options = questions[index][quesText];
+    var quesText; //The question text
+
+    for (var i = 0; i < 2; i++) {
+      if (widget.questions[index].keys.toList()[i] != 'ans') {
+        quesText = widget.questions[index].keys.toList()[i];
+        break;
+      }
+    }
+
+     
+    var options = widget.questions[index][quesText];
 
     return Scaffold(
         appBar: AppBar(
@@ -121,7 +143,7 @@ class _QuizScreenState extends State<QuizScreen> {
                   itemCount: options.length,
                   itemBuilder: (context, ind) {
                     return Card(
-                      color: questions[index]['colors'][ind],
+                      color: widget.questions[index]['colors'][ind],
                       elevation: 5,
                       child: ListTile(
                         title: Text(options[ind]),
@@ -129,10 +151,11 @@ class _QuizScreenState extends State<QuizScreen> {
                             ? () {
                                 selOptionIndex = ind;
                                 setState(() {
-                                  questions[index]['colors'][ind] = Colors.blue;
+                                  widget.questions[index]['colors'][ind] =
+                                      Colors.blue;
                                   for (var i = 0; i < 4; i++) {
                                     if (i != selOptionIndex) {
-                                      questions[index]['colors'][i] =
+                                      widget.questions[index]['colors'][i] =
                                           Colors.black54;
                                     }
                                   }
@@ -153,17 +176,18 @@ class _QuizScreenState extends State<QuizScreen> {
                   child: ElevatedButton(
                     onPressed: () {
                       selectedOptions.add(options[selOptionIndex]);
-                      var ansInd = questions[index]['ans'];
+                      var ansInd = widget.questions[index]['ans'];
 
                       setState(() {
                         if (ansInd == selOptionIndex) {
-                          questions[index]['colors'][selOptionIndex] =
+                          widget.questions[index]['colors'][selOptionIndex] =
                               Colors.green;
                           totCorrectAns++;
                         } else {
-                          questions[index]['colors'][selOptionIndex] =
+                          widget.questions[index]['colors'][selOptionIndex] =
                               Colors.red;
-                          questions[index]['colors'][ansInd] = Colors.green;
+                          widget.questions[index]['colors'][ansInd] =
+                              Colors.green;
                           totIncorrectAns++;
                         }
                       });

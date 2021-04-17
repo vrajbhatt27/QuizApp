@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:internship_task/screens/homeScreen.dart';
 import 'package:share/share.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
@@ -8,15 +9,14 @@ import 'package:pdf/widgets.dart' as pw;
 import 'dart:io';
 import 'dart:async';
 import './pdfPreviewScreen.dart';
-import '../data.dart';
 import './reviewAns.dart';
-import './quizScreen.dart';
 
 class ResultScreen extends StatelessWidget {
   final score;
   final selectedOptions;
+  final questions;
 
-  ResultScreen(this.score, this.selectedOptions);
+  ResultScreen(this.score, this.selectedOptions, this.questions);
 
   final pdf = pw.Document();
 
@@ -45,7 +45,13 @@ class ResultScreen extends StatelessWidget {
             ),
           ),
           ...questions.map((ques) {
-            var question = ques.keys.toList()[0];
+            var question;
+            for (var i = 0; i < 2; i++) {
+              if (ques.keys.toList()[i] != 'ans') {
+                question = ques.keys.toList()[i];
+                break;
+              }
+            }
             var ans = ques[question][ques['ans']];
 
             return pw.Column(
@@ -145,7 +151,7 @@ class ResultScreen extends StatelessWidget {
               ),
             ),
           ),
-          //
+          // Card containing details
           Container(
             height: 200,
             padding: EdgeInsets.all(10),
@@ -192,35 +198,38 @@ class ResultScreen extends StatelessWidget {
               ),
             ),
           ),
-          //
+          // Buttons
           Column(
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  TextButton(
+                  // Replay quiz
+									TextButton(
                     onPressed: () {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                          builder: (_) => QuizScreen(),
+                          builder: (_) => HomeScreen(),
                         ),
                       );
                     },
                     child: Text("Play Again"),
                   ),
-                  TextButton(
+                  // Review Ans
+									TextButton(
                     onPressed: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (_) => ReviewAns(selectedOptions),
+                          builder: (_) => ReviewAns(selectedOptions, questions),
                         ),
                       );
                     },
                     child: Text("Review Answer"),
                   ),
-                  TextButton(
+                  // Share Score
+									TextButton(
                     onPressed: () {
                       final String sub = "";
                       final RenderBox box = context.findRenderObject();
@@ -265,7 +274,7 @@ class ResultScreen extends StatelessWidget {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                          builder: (_) => QuizScreen(),
+                          builder: (_) => HomeScreen(),
                         ),
                       );
                     },

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import '../data.dart';
 
 class ReviewAns extends StatelessWidget {
   final selOptions;
+  final questions;
 
-  ReviewAns(this.selOptions);
+  ReviewAns(this.selOptions, this.questions);
 
   Widget disp(String text) {
     return Container(
@@ -18,7 +18,6 @@ class ReviewAns extends StatelessWidget {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,19 +30,25 @@ class ReviewAns extends StatelessWidget {
             itemCount: questions.length,
             itemBuilder: (_, ind) {
               var listItem = questions[ind];
-              var ques = listItem.keys.toList()[0];
+              var ques;
+              for (var i = 0; i < 2; i++) {
+                if (listItem.keys.toList()[i] != 'ans') {
+                  ques = listItem.keys.toList()[i];
+                  break;
+                }
+              }
               var ans = listItem[ques][listItem['ans']];
-							return Container(
+              return Container(
                 padding: EdgeInsets.only(bottom: 8),
                 child: Card(
-									color: (ans == selOptions[ind])? Colors.green:Colors.red,
+                  color: (ans == selOptions[ind]) ? Colors.green : Colors.red,
                   elevation: 5,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       disp(ques),
                       disp("Answer: " + ans),
-											disp("Your Answer: " + selOptions[ind]),											
+                      disp("Your Answer: " + selOptions[ind]),
                     ],
                   ),
                 ),
