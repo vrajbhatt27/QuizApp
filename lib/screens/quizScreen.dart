@@ -12,7 +12,7 @@ class QuizScreen extends StatefulWidget {
 }
 
 class _QuizScreenState extends State<QuizScreen> {
-  int seconds = 7;
+  int seconds = 10;
   int index = 0;
   int totCorrectAns = 0;
   int totIncorrectAns = 0;
@@ -23,7 +23,7 @@ class _QuizScreenState extends State<QuizScreen> {
   @override
   void initState() {
     super.initState();
-    // countDown();
+    countDown();
   }
 
   countDown() {
@@ -54,11 +54,11 @@ class _QuizScreenState extends State<QuizScreen> {
     if (attempted == false) {
       selectedOptions.add("Not Selected");
     }
-    if (index < 2) {
+    if (index < (widget.questions.length-1)) {
       setState(() {
         index = (index + 1);
         selOptionIndex = 0;
-        seconds = 7;
+        seconds = 10;
         attempted = false;
       });
     } else {
@@ -294,16 +294,29 @@ class _QuizScreenState extends State<QuizScreen> {
               Positioned(
                 left: 160,
                 top: 100,
-                child: CircleAvatar(
-                  child: Text(
-                    "$seconds",
-                    style: TextStyle(
-                        color: purple,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16),
+                child: Container(
+                  decoration: BoxDecoration(
+										borderRadius: BorderRadius.all(Radius.circular(100)),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.7),
+                        spreadRadius: 5,
+                        blurRadius: 7,
+                        offset: Offset(0, 3), // changes position of shadow
+                      ),
+                    ],
                   ),
-                  radius: 40,
-                  backgroundColor: white1,
+                  child: CircleAvatar(
+                    child: Text(
+                      "$seconds",
+                      style: TextStyle(
+                          color: purple,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 24),
+                    ),
+                    radius: 40,
+                    backgroundColor: white1,
+                  ),
                 ),
               ),
               Positioned(
@@ -337,49 +350,3 @@ class _QuizScreenState extends State<QuizScreen> {
     );
   }
 }
-
-/*
-
-// Buttons
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                //Submit Button
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 80),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      selectedOptions.add(options[selOptionIndex]);
-                      var ansInd = widget.questions[index]['ans'];
-
-                      setState(() {
-                        if (ansInd == selOptionIndex) {
-                          widget.questions[index]['colors'][selOptionIndex] =
-                              Colors.green;
-                          totCorrectAns++;
-                        } else {
-                          widget.questions[index]['colors'][selOptionIndex] =
-                              Colors.red;
-                          widget.questions[index]['colors'][ansInd] =
-                              Colors.green;
-                          totIncorrectAns++;
-                        }
-                      });
-                      selOptionIndex = -1;
-                    },
-                    child: Text('Submit'),
-                  ),
-                ),
-
-                // Next Question
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ElevatedButton(
-                    onPressed: nextQues,
-                    child: index > 1 ? Text("Finish") : Text('Next'),
-                  ),
-                )
-              ],
-            ),
-
- */

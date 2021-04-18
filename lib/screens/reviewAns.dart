@@ -27,7 +27,7 @@ class ReviewAns extends StatelessWidget {
 				backgroundColor: purple,
       ),
       body: Container(
-        height: 500,
+        height: 650,
         child: ListView.builder(
             itemCount: questions.length,
             itemBuilder: (_, ind) {

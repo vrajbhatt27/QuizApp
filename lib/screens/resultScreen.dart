@@ -29,6 +29,7 @@ class ResultScreen extends StatelessWidget {
       margin: pw.EdgeInsets.all(32),
       build: (pw.Context context) {
         return <pw.Widget>[
+					// pw.SizedBox(height: 20),
           pw.Header(
             level: 0,
             child: pw.Row(
@@ -64,19 +65,11 @@ class ResultScreen extends StatelessWidget {
                       pw.Paragraph(
                         text: "${num++} " + question,
                         style: pw.TextStyle(
-                          fontSize: 25,
+                          fontSize: 20,
                           fontWeight: pw.FontWeight.bold,
                         ),
                       ),
-                      pw.Paragraph(
-                        text: (ans == selectedOptions[index])
-                            ? "Correct"
-                            : "Incorrect",
-                        style: pw.TextStyle(
-                          fontSize: 25,
-                          fontWeight: pw.FontWeight.bold,
-                        ),
-                      ),
+                      
                     ]),
                 pw.Paragraph(
                   text: ("Answer: " + ans),
@@ -85,11 +78,20 @@ class ResultScreen extends StatelessWidget {
                   ),
                 ),
                 pw.Paragraph(
-                  text: "Your Answer: " + selectedOptions[index++],
+                  text: "Your Answer: " + selectedOptions[index],
                   style: pw.TextStyle(
                     fontSize: 20,
                   ),
                 ),
+								pw.Paragraph(
+                        text: (ans == selectedOptions[index++])
+                            ? "Correct"
+                            : "Incorrect",
+                        style: pw.TextStyle(
+                          fontSize: 20,
+                          fontWeight: pw.FontWeight.bold,
+                        ),
+                      ),
               ],
             );
           }).toList(),
@@ -215,7 +217,7 @@ class ResultScreen extends StatelessWidget {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  bullet(" 0${3 - score}", red),
+                                  bullet(" 0${questions.length - score}", red),
                                   disp('   Incorrect', lblack),
                                 ],
                               ),
