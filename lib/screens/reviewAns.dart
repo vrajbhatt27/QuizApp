@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../colors.dart';
 
 class ReviewAns extends StatelessWidget {
   final selOptions;
@@ -23,6 +24,7 @@ class ReviewAns extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("Review Answer"),
+				backgroundColor: purple,
       ),
       body: Container(
         height: 500,
